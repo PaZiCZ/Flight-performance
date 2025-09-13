@@ -2,18 +2,12 @@ import matplotlib.pyplot as plt
 import numpy as np
 from readplane import aircraft_input as readinput
 
-
-# Function to plot aircraft parameters
-def plot_parameters(data):
-    keys = [k for k in data if k != 'Plane']
-    values = [data[k] for k in keys]
-    plt.figure(figsize=(10, 6))
-    plt.bar(keys, values)
-    plt.title(f"Aircraft Parameters for {data['Plane']}")
-    plt.ylabel("Value")
-    plt.xticks(rotation=45)
-    plt.tight_layout()
-    plt.show()
+def print_parameters(data):
+    print(f"Aircraft: {data.get('Plane', 'Unknown')}")
+    print("Parameters:")
+    for key, value in data.items():
+        if key != 'Plane':
+            print(f"  {key}: {value}")
 
 # Function to modify parameters
 def modify_parameters(data):
@@ -59,7 +53,7 @@ def main():
             print("Aircraft data loaded.")
         elif choice == '2':
             if aircraft_data:
-                plot_parameters(aircraft_data)
+                print_parameters(aircraft_data)
             else:
                 print("No data loaded. Please read the input file first.")
         elif choice == '3':
@@ -76,7 +70,7 @@ def main():
             print("Exiting program.")
             break
         else:
-            print("Invalid choice. Please select a valid option.")
+            print("Invalid choice. Please select a valid option (number from 1 to 5).")
 
 if __name__ == "__main__":
     main()
