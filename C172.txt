@@ -1,0 +1,21 @@
+Plane C-172
+
+#sref    bref
+16.4258     10.9982
+
+AERO
+#cd0 	e 	clmax 
+0.0293	0.84	1.547
+
+PROPULSION 
+Type 
+#engtype  proptype	power	etaprop	vnom
+1	1	120	0.85	235
+
+MASS
+#mtow	mfuel
+1111	90
+
+STRUCTURAL
+#loadfactor
+3.8
