@@ -1,0 +1,29 @@
+flight_analysis/
+│
+├── main.py                      # Entry point for running analyses
+├── config.py                    # Configuration and constants
+│
+├── aircraft/
+│   ├── __init__.py
+│   ├── geometry.py              # Wing span, area, fuselage dimensions
+│   ├── mass_properties.py       # Weight, CG, inertia
+│   ├── propulsion.py            # Engine type, thrust, fuel consumption
+│   └── aerodynamics.py          # Lift, drag, polar curves
+│
+├── performance/
+│   ├── __init__.py
+│   ├── flight_envelope.py       # Vmin/Vmax vs altitude
+│   ├── climb.py                 # Rate of climb, ceiling
+│   ├── turn.py                  # Turn radius, load factor
+│   ├── range_endurance.py       # Breguet range, endurance
+│   └── utils.py                 # Shared performance functions
+│
+├── visualization/
+│   ├── __init__.py
+│   ├── plot_envelope.py
+│   ├── plot_climb.py
+│   ├── plot_turn.py
+│   └── plot_range.py
+│
+└── data/
+    └── aircraft_config.json     # Input parameters for aircraft
