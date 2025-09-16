@@ -19,7 +19,11 @@ def aircraft_input(filename):
         elif param_names:
             values = line.split()
             for name, value in zip(param_names, values):
-                data[name] = float(value) if value.replace('.', '', 1).isdigit() else value
+                # Try to cast to float if numeric
+                try:
+                    data[name] = float(value)
+                except ValueError:
+                    data[name] = value
             param_names = []
 
     return data
