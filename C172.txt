@@ -1,5 +1,6 @@
 Plane C-172
 
+SIZE
 #sref    bref
 16.4258     10.9982
 

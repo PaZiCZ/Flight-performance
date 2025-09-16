@@ -1,27 +1,33 @@
 import matplotlib.pyplot as plt
 import numpy as np
-from readplane import aircraft_input as readinput
+from readplane import aircraft_input
 from flight_analysis import FlightPerformance
 
-def print_parameters(data):
-    print(f"Aircraft: {data.get('Plane', 'Unknown')}")
+def print_parameters(adata):
+    plane = getattr(adata, "plane", "Unknown")
+    print(f"Aircraft: {plane}\n")
     print("Parameters:")
-    for key, value in data.items():
-        if key != 'Plane':
+    for section, keys in adata._sections.items():
+        print(f"{section}:")
+        for key in keys:
+            value = getattr(adata, key, None)
             print(f"  {key}: {value}")
+        print()
 
 # Function to modify parameters
-def modify_parameters(data):
+def modify_parameters(adata):
     print("Current parameters:")
-    for key in data:
-        if key != 'Plane':
-            print(f"{key}: {data[key]}")
+    for section, keys in adata._sections.items():
+        print(f"{section}:")
+        for key in keys:
+            print(f"  {key}: {getattr(adata, key)}")
+        print()
     param = input("Enter the parameter name to modify: ")
-    if param in data:
+    if hasattr(adata, param):
         new_value = input(f"Enter new value for {param}: ")
         try:
-            data[param] = float(new_value)
-            print(f"Updated {param} to {data[param]}")
+            setattr(adata, param, float(new_value))
+            print(f"Updated {param} to {getattr(adata, param)}")
         except ValueError:
             print("Invalid value. Must be a number.")
     else:
@@ -29,7 +35,7 @@ def modify_parameters(data):
 
 # Main menu loop
 def main():
-    aircraft_data = {}
+    adata = None
     while True:
         print("Main Menu")
         print("1) Read the input file")
@@ -41,21 +47,21 @@ def main():
 
         if choice == '1':
             inputfile = input("Enter the input file name: ")
-            aircraft_data = readinput(inputfile)
+            adata = aircraft_input(inputfile)
             print("Aircraft data loaded.")
         elif choice == '2':
-            if aircraft_data:
-                print_parameters(aircraft_data)
+            if adata:
+                print_parameters(adata)
             else:
                 print("No data loaded. Please read the input file first.")
         elif choice == '3':
-            if aircraft_data:
-                modify_parameters(aircraft_data)
+            if adata:
+                modify_parameters(adata)
             else:
                 print("No data loaded. Please read the input file first.")
         elif choice == '4':
-            if aircraft_data:
-                FlightPerformance(aircraft_data)
+            if adata:
+                FlightPerformance(adata)
             else:
                 print("No data loaded. Please read the input file first.")
         elif choice == '5':
