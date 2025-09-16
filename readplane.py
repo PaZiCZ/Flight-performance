@@ -29,7 +29,7 @@ def aircraft_input(filename):
         elif param_names:
             values = line.split()
             for name, value in zip(param_names, values):
-                # Try to cast to float if numeric
+                # Try to cast to float if numeric /// zkontrolovat a doplnit kontrolu, ze promenne jsou numericke hodnoty
                 try:
                     data[name] = float(value)
                 except ValueError:

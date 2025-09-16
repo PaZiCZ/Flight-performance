@@ -6,7 +6,7 @@ SIZE
 
 AERO
 #cd0 	e 	clmax 
-0.0293	0.84	1.547
+0.0293	ssd	1.547
 
 PROPULSION 
 Type 
