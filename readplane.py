@@ -1,5 +1,14 @@
+class Adata:
+    """Class for aircraft data with attribute-style access."""
+    def __init__(self, data_dict, sections):
+        for key, value in data_dict.items():
+            setattr(self, key, value)
+        self._sections = sections
+
 def aircraft_input(filename):
     data = {}
+    sections = {}
+    current_section = None
     param_names = []
 
     with open(filename, 'r') as file:
@@ -15,7 +24,8 @@ def aircraft_input(filename):
         elif line.startswith("#"):
             param_names = line[1:].split()
         elif line.isupper():
-            continue  # Skip group headers
+            current_section = line
+            sections[current_section] = []
         elif param_names:
             values = line.split()
             for name, value in zip(param_names, values):
@@ -24,6 +34,8 @@ def aircraft_input(filename):
                     data[name] = float(value)
                 except ValueError:
                     data[name] = value
+                if current_section:
+                    sections[current_section].append(name)
             param_names = []
 
-    return data
+    return Adata(data, sections)
