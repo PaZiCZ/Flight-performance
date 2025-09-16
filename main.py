@@ -1,6 +1,7 @@
 import matplotlib.pyplot as plt
 import numpy as np
 from readplane import aircraft_input as readinput
+from flight_analysis import FlightPerformance
 
 def print_parameters(data):
     print(f"Aircraft: {data.get('Plane', 'Unknown')}")
@@ -25,15 +26,6 @@ def modify_parameters(data):
             print("Invalid value. Must be a number.")
     else:
         print("Parameter not found.")
-
-# Dummy flight performance analysis function
-def flight_performance_analysis(data):
-    print("Running flight performance analysis...")
-    if 'Power' in data and 'MTOW' in data:
-        thrust_to_weight = data['Power'] / data['MTOW']
-        print(f"Thrust-to-weight ratio: {thrust_to_weight:.3f}")
-    else:
-        print("Required parameters missing for analysis.")
 
 # Main menu loop
 def main():
@@ -63,7 +55,7 @@ def main():
                 print("No data loaded. Please read the input file first.")
         elif choice == '4':
             if aircraft_data:
-                flight_performance_analysis(aircraft_data)
+                FlightPerformance(aircraft_data)
             else:
                 print("No data loaded. Please read the input file first.")
         elif choice == '5':
