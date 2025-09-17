@@ -6,11 +6,11 @@ SIZE
 
 AERO
 #cd0 	e 	clmax 
-0.0293	0.84	1.547
+0.0293	0.82	1.547
 
 PROPULSION 
 Type 
-#engtype  proptype	power	etaprop	vnom
+#engtype  proptype	pmax	etaprop	vnom
 1	1	120	0.85	235
 
 MASS

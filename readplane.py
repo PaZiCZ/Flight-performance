@@ -10,11 +10,12 @@ def aircraft_input(filename):
     sections = {}
     current_section = None
     param_names = []
+    errors = []
 
     with open(filename, 'r') as file:
         lines = file.readlines()
 
-    for line in lines:
+    for line_num, line in enumerate(lines, start=1):
         line = line.strip()
         if not line:
             continue
@@ -29,13 +30,23 @@ def aircraft_input(filename):
         elif param_names:
             values = line.split()
             for name, value in zip(param_names, values):
-                # Try to cast to float if numeric
                 try:
                     data[name] = float(value)
                 except ValueError:
-                    data[name] = value
-                if current_section:
-                    sections[current_section].append(name)
-            param_names = []
+                    errors.append(
+                        f"!!! Line {line_num}, Section '{current_section}': "
+                        f"Invalid non-numeric value '{value}' for parameter '{name}'"
+                    )
+                else:
+                    if current_section:
+                        sections[current_section].append(name)
+                param_names = []
+
+                if errors:
+                    print("\n!!!  The input data contains invalid values:\n")
+                    for err in errors:
+                        print(err)
+                    print("\nReturning to main menu...\n")
+                    return None
 
     return Adata(data, sections)

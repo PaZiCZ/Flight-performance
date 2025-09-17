@@ -3,6 +3,7 @@ import numpy as np
 from ISA import air_density
 from specifications import nv, nh, hmax, vmax
 from constants import g
+from power import power_available
 
 class FlightPerformance:
     def __init__(self, adata):
@@ -14,6 +15,8 @@ class FlightPerformance:
         self.cL = np.zeros((nh, nv))
         self.cD = np.zeros((nh, nv))
         self.D = np.zeros((nh, nv))
+        self.Pa = np.zeros((nh, nv))
+        self.Ta = np.zeros((nh, nv))
 
         ar = adata.bref ** 2 / adata.sref
 
@@ -30,6 +33,8 @@ class FlightPerformance:
                 self.cL[i, j] = 2 * adata.mtow * g / (rho * adata.sref * speed ** 2)
                 self.cD[i, j] = adata.cd0 + self.cL[i,j] ** 2 / (np.pi * ar * adata.e)
                 self.D[i, j] = self.cD[i, j] * 0.5 * adata.sref * rho * speed ** 2
+                self.Pa[i, j] = power_available(rho, speed, adata) * 1000
+                self.Ta[i, j] = self.Pa[i, j] / speed
 
-        print(self.cD)
-        print(self.D)
+        print(self.Pa)
+        print(self.Ta)

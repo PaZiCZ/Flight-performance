@@ -48,7 +48,10 @@ def main():
         if choice == '1':
             inputfile = input("Enter the input file name: ")
             adata = aircraft_input(inputfile)
-            print("Aircraft data loaded.")
+            if adata is None:
+                print("Aircraft data loading FAILED.")
+            else:
+                print("Aircraft data loaded.")
         elif choice == '2':
             if adata:
                 print_parameters(adata)
