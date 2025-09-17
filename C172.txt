@@ -10,7 +10,7 @@ AERO
 
 PROPULSION 
 Type 
-#engtype  proptype	power	etaprop	vnom
+#engtype  proptype	pmax	etaprop	vnom
 1	1	120	0.85	235
 
 MASS
