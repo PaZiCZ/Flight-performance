@@ -64,7 +64,10 @@ def main():
                 print("No data loaded. Please read the input file first.")
         elif choice == '4':
             if adata:
-                FlightPerformance(adata)
+                fp = FlightPerformance(adata)
+                fp.compute_performance(adata)  # Fills all the arrays with calculated data
+                fp.find_intersections()  # Finds intersection points using the calculated data
+                fp.print_results()  # Prints the results
             else:
                 print("No data loaded. Please read the input file first.")
         elif choice == '5':
