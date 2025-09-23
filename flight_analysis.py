@@ -39,10 +39,6 @@ class FlightPerformance:
                 self.Ta[i, j] = self.Pa[i, j] / speed
                 self.Pr[i, j] = self.D[i, j] * speed
 
-        print(self.Pa)
-        print(self.Ta)
-
-
     def find_intersections(self):
         nh, nv = self.speeds.shape
         for i in range(nh):
@@ -57,9 +53,3 @@ class FlightPerformance:
                     inter_speeds.append(x_int)
             self.intersections.append(inter_speeds)
         return self.intersections
-
-
-    def print_results(self):
-        for i, inter in enumerate(self.intersections):
-            print(f"Altitude {self.altitudes[i]:.0f} m: Intersection speeds = {inter}")
-
