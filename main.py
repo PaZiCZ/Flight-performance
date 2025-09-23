@@ -1,7 +1,6 @@
-import matplotlib.pyplot as plt
-import numpy as np
 from readplane import aircraft_input
 from flight_analysis import FlightPerformance
+from plot_flight_performance import plot_flight_performance
 
 def print_parameters(adata):
     plane = getattr(adata, "plane", "Unknown")
@@ -64,7 +63,15 @@ def main():
                 print("No data loaded. Please read the input file first.")
         elif choice == '4':
             if adata:
-                FlightPerformance(adata)
+                fp = FlightPerformance(adata)
+                fp.compute_performance(adata)  # Fills all the arrays with calculated data
+                fp.find_intersections()  # Finds intersection points using the calculated data
+
+                altitudes = fp.altitudes
+                stall_speeds = fp.speeds[:, 0]  # First column is stall speed at each altitude
+                intersections = fp.intersections
+
+                plot_flight_performance(altitudes, stall_speeds, intersections)
             else:
                 print("No data loaded. Please read the input file first.")
         elif choice == '5':
