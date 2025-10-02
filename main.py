@@ -1,6 +1,7 @@
 from readplane import aircraft_input
 from flight_analysis import FlightPerformance
 from plot_flight_performance import plot_flight_performance
+import joke
 
 def print_parameters(adata):
     plane = getattr(adata, "plane", "Unknown")
@@ -42,6 +43,7 @@ def main():
         print("3) Modify aircraft parameters")
         print("4) Run flight performance analysis")
         print("5) Quit the program")
+        print("7) Print of joke of the day from https://jokesoftheday.net/")
         choice = input("Enter your choice: ")
 
         if choice == '1':
@@ -74,6 +76,9 @@ def main():
                 plot_flight_performance(altitudes, stall_speeds, intersections)
             else:
                 print("No data loaded. Please read the input file first.")
+        elif choice == '7':
+            print("\nJoke of the Day:\n")
+            print(joke.get_joke_of_the_day())
         elif choice == '5':
             print("Exiting program.")
             break
