@@ -2,3 +2,4 @@ matplotlib
 numpy
 requests
 beautifulsoup4
+pytest
