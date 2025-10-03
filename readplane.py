@@ -21,7 +21,9 @@ def aircraft_input(filename):
             continue
 
         if line.startswith("Plane"):
-            data['Plane'] = line.split(" ", 1)[1]
+            # Save aircraft name under 'name' key
+            aircraft_name = line.split(" ", 1)[1]
+            data['name'] = aircraft_name
         elif line.startswith("#"):
             param_names = line[1:].split()
         elif line.isupper():
@@ -40,13 +42,13 @@ def aircraft_input(filename):
                 else:
                     if current_section:
                         sections[current_section].append(name)
-                param_names = []
+            param_names = []
 
-                if errors:
-                    print("\n!!!  The input data contains invalid values:\n")
-                    for err in errors:
-                        print(err)
-                    print("\nReturning to main menu...\n")
-                    return None
+            if errors:
+                print("\n!!!  The input data contains invalid values:\n")
+                for err in errors:
+                    print(err)
+                print("\nReturning to main menu...\n")
+                return None
 
     return Adata(data, sections)

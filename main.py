@@ -5,7 +5,7 @@ from plot_flight_performance import plot_climb_rate
 import joke
 
 def print_parameters(adata):
-    plane = getattr(adata, "plane", "Unknown")
+    plane = getattr(adata, "name", "Unknown")
     print(f"Aircraft: {plane}\n")
     print("Parameters:")
     for section, keys in adata._sections.items():
