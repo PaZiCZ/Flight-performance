@@ -1,6 +1,7 @@
 from readplane import aircraft_input
 from flight_analysis import FlightPerformance
-from plot_flight_performance import plot_flight_performance
+from plot_flight_performance import plot_flight_envelope
+from plot_flight_performance import plot_climb_rate
 import joke
 
 def print_parameters(adata):
@@ -73,7 +74,9 @@ def main():
                 stall_speeds = fp.speeds[:, 0]  # First column is stall speed at each altitude
                 intersections = fp.intersections
 
-                plot_flight_performance(altitudes, stall_speeds, intersections)
+                plot_flight_envelope(altitudes, stall_speeds, intersections)
+
+                plot_climb_rate(altitudes, fp.speeds, fp.w)
             else:
                 print("No data loaded. Please read the input file first.")
         elif choice == '7':
@@ -83,7 +86,7 @@ def main():
             print("Exiting program.")
             break
         else:
-            print("Invalid choice. Please select a valid option (number from 1 to 5).")
+            print("Invalid choice. Please select a valid option (number from 1 to 5 or 7).")
 
 if __name__ == "__main__":
     main()

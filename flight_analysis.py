@@ -18,6 +18,7 @@ class FlightPerformance:
         self.Ta = np.zeros((nh, nv))
         self.Pr = np.zeros((nh, nv))
         self.intersections = []
+        self.w = np.zeros((nh, nv))
 
     def compute_performance(self, adata):
         ar = adata.bref ** 2 / adata.sref
@@ -38,6 +39,7 @@ class FlightPerformance:
                 self.Pa[i, j] = power_available(rho, speed, adata) * 1000
                 self.Ta[i, j] = self.Pa[i, j] / speed
                 self.Pr[i, j] = self.D[i, j] * speed
+                self.w[i,j] = (self.Pa[i, j] - self.Pr[i, j]) / adata.mtow / g
 
     def find_intersections(self):
         nh, nv = self.speeds.shape
@@ -53,3 +55,6 @@ class FlightPerformance:
                     inter_speeds.append(x_int)
             self.intersections.append(inter_speeds)
         return self.intersections
+
+    def find_ceiling(self) :
+        pass
