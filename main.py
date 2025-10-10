@@ -2,6 +2,7 @@ from readplane import aircraft_input
 from flight_analysis import FlightPerformance
 from plot_flight_performance import plot_flight_envelope
 from plot_flight_performance import plot_climb_rate
+from plot_flight_performance import plot_turn_diagram
 import joke
 
 def print_parameters(adata):
@@ -74,8 +75,10 @@ def main():
                 stall_speeds = fp.speeds[:, 0]  # First column is stall speed at each altitude
                 intersections = fp.intersections
                 ceiling = fp.find_ceiling()
+                turn_data = fp.compute_turn_radius(adata)
                 plot_flight_envelope(altitudes, stall_speeds, intersections, ceiling, aircraft_name=adata.name)
                 plot_climb_rate(altitudes, fp.speeds, fp.w, aircraft_name=adata.name)
+                plot_turn_diagram(turn_data, aircraft_name=adata.name)
 
             else:
                 print("No data loaded. Please read the input file first.")

@@ -81,3 +81,67 @@ class FlightPerformance:
 
         return h_abs, h_serv
 
+    def compute_turn_radius(self, adata):
+        """
+        Compute minimum turn radius at sea level for structural, aerodynamic, and power limitations.
+        Returns a dictionary with speed array and corresponding radii for each limitation.
+        """
+        rho = air_density(0)
+        ar = adata.bref ** 2 / adata.sref
+        h_index = 0  # sea level
+        speeds = self.speeds[h_index, :]
+        D = self.D[h_index, :]
+        Ta = self.Ta[h_index, :]
+        cD0 = adata.cd0
+        e = adata.e
+        S = adata.sref
+        m = adata.mtow
+        n_max = adata.loadfactor
+
+        # Stall speed at sea level
+        vstall = np.sqrt(2 * m * g / (rho * S * adata.clmax))
+
+        # Vmax from intersection speeds
+        intersection_speeds = self.intersections[h_index]
+        vmax = max(intersection_speeds) if intersection_speeds else speeds[-1]
+
+        r_structural = []
+        r_aero = []
+        r_power = []
+
+        for i, v in enumerate(speeds):
+            # Structural limitation
+            r_structural.append(v ** 2 / (g * np.sqrt(n_max ** 2 - 1)))
+
+            # Aerodynamic limitation
+            if v >= vstall:
+                n_aero = (v / vstall) ** 2
+                if n_aero > 1:
+                    r_aero.append(v ** 2 / (g * np.sqrt(n_aero ** 2 - 1)))
+                else:
+                    r_aero.append(np.nan)
+            else:
+                r_aero.append(np.nan)
+
+            # Power limitation
+            if v <= vmax:
+                cD = 2 * D[i] / (rho * S * v ** 2)
+                if cD - cD0 > 0:
+                    cL = np.sqrt((cD - cD0) * (np.pi * ar * e))
+                    n_power = cL / cD * Ta[i] / m / g
+                    if n_power > 1:
+                        r_power.append(v ** 2 / (g * np.sqrt(n_power ** 2 - 1)))
+                    else:
+                        r_power.append(np.nan)
+                else:
+                    r_power.append(np.nan)
+            else:
+                r_power.append(np.nan)
+
+        return {
+            "speeds": speeds,
+            "r_structural": np.array(r_structural),
+            "r_aero": np.array(r_aero),
+            "r_power": np.array(r_power)
+        }
+

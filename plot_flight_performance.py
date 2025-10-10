@@ -68,3 +68,33 @@ def plot_climb_rate(altitudes, speeds, climb_rates, aircraft_name="aircraft", sa
     plt.savefig(save_path)
     plt.close()
     print(f"Climb rate plot saved as {os.path.abspath(save_path)}")
+
+def plot_turn_diagram(turn_data, aircraft_name="aircraft", save_dir="Outputs"):
+    """
+    Plot minimum turn radius vs speed for structural, aerodynamic, and power limitations.
+    """
+    speeds = turn_data["speeds"] * 3.6  # Convert to km/h
+    r_structural = turn_data["r_structural"]
+    r_aero = turn_data["r_aero"]
+    r_power = turn_data["r_power"]
+
+    plt.figure(figsize=(8, 6))
+    plt.plot(speeds, r_structural, label="Structural Limit", color="blue", linestyle="-")
+    plt.plot(speeds, r_aero, label="Aerodynamic Limit", color="green", linestyle="--")
+    plt.plot(speeds, r_power, label="Power Limit", color="red", linestyle=":")
+
+    plt.xlabel("Speed [km/h]")
+    plt.ylabel("Minimum Turn Radius [m]")
+    plt.title(f"Turn Radius Diagram at sea level altitude: {aircraft_name}")
+    plt.legend()
+    plt.grid(True)
+    plt.ylim((0,250))
+    plt.tight_layout()
+
+    save_dir = ensure_output_dir(save_dir)
+    filename = f"{aircraft_name}_turn_diagram_{timestamp()}.pdf"
+    save_path = os.path.join(save_dir, filename)
+    plt.savefig(save_path)
+    plt.close()
+    print(f"Turn radius diagram saved as {os.path.abspath(save_path)}")
+
