@@ -14,7 +14,7 @@ def ensure_output_dir(save_dir="Outputs"):
         os.makedirs(save_dir)
     return save_dir
 
-def plot_flight_envelope(altitudes, stall_speeds, intersection_speeds, aircraft_name="aircraft", save_dir="Outputs"):
+def plot_flight_envelope(altitudes, stall_speeds, intersection_speeds, ceiling, aircraft_name="aircraft", save_dir="Outputs"):
     """
     Save stall speed and max intersection speed vs altitude to a PDF file.
     """
@@ -23,10 +23,13 @@ def plot_flight_envelope(altitudes, stall_speeds, intersection_speeds, aircraft_
     max_intersection_speeds = np.array([
         max(speeds) if speeds else np.nan for speeds in intersection_speeds
     ])
+    h_abs, h_serv = ceiling
 
     plt.figure(figsize=(8, 6))
     plt.plot(stall_speeds * 3.6, altitudes, label='Stall Speed', marker='o')  # km/h
     plt.plot(max_intersection_speeds * 3.6, altitudes, label='Max Intersection Speed', marker='x')
+    plt.axhline(y=h_abs, color='red', linestyle='--', label='Absolute Ceiling')
+    plt.axhline(y=h_serv, color='orange', linestyle='--', label='Service Ceiling')
     plt.xlabel('Speed [km/h]')
     plt.ylabel('Altitude [m]')
     plt.title(f'Flight Envelope: {aircraft_name}')

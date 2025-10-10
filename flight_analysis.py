@@ -56,5 +56,28 @@ class FlightPerformance:
             self.intersections.append(inter_speeds)
         return self.intersections
 
-    def find_ceiling(self) :
-        pass
+    def find_ceiling(self):
+        # Extract the two highest altitude indices
+        h1 = self.altitudes[-2]
+        h2 = self.altitudes[-1]
+
+        # Find max climb rates at those altitudes
+        w1 = np.max(self.w[-2, :])
+        w2 = np.max(self.w[-1, :])
+
+        # Linear extrapolation: w = a * h + b
+        # Solve for a and b using the two points (h1, w1) and (h2, w2)
+        a = (w2 - w1) / (h2 - h1)
+        b = w1 - a * h1
+
+        # Absolute ceiling: climb rate = 0
+        if a != 0:
+            h_abs = -b / a
+        else:
+            h_abs = np.nan  # No change in climb rate, ceiling undefined
+
+        # Service ceiling: climb rate = 0.5 m/s
+        h_serv = (0.5 - b) / a if a != 0 else np.nan
+
+        return h_abs, h_serv
+

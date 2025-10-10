@@ -73,7 +73,8 @@ def main():
                 altitudes = fp.altitudes
                 stall_speeds = fp.speeds[:, 0]  # First column is stall speed at each altitude
                 intersections = fp.intersections
-                plot_flight_envelope(altitudes, stall_speeds, intersections, aircraft_name=adata.name)
+                ceiling = fp.find_ceiling()
+                plot_flight_envelope(altitudes, stall_speeds, intersections, ceiling, aircraft_name=adata.name)
                 plot_climb_rate(altitudes, fp.speeds, fp.w, aircraft_name=adata.name)
 
             else:
