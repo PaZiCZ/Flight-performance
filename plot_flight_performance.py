@@ -98,3 +98,57 @@ def plot_turn_diagram(turn_data, aircraft_name="aircraft", save_dir="Outputs"):
     plt.close()
     print(f"Turn radius diagram saved as {os.path.abspath(save_path)}")
 
+def plot_range(altitudes, speeds, intersection_speeds, range , aircraft_name="aircraft", save_dir="Outputs"):
+    """
+    Save range vs speed for each altitude to a PDF file.
+    """
+    plt.figure(figsize=(8, 6))
+    for i, altitude in enumerate(altitudes):
+        max_speed = intersection_speeds[i]
+        mask = speeds[i, :] <= max_speed
+        speeds_kmh = speeds[i, mask] * 3.6
+        range_filtered = range[i, mask]
+        plt.plot(speeds_kmh, range_filtered, label=f"{int(altitude)} m")
+
+    plt.xlabel("Speed [km/h]")
+    plt.ylabel("Range [km]")
+    plt.title(f"Range vs Speed: {aircraft_name}")
+    plt.legend(title="Altitude")
+    plt.grid(True)
+    plt.ylim(bottom=0)
+    plt.tight_layout()
+
+    save_dir = ensure_output_dir(save_dir)
+    filename = f"{aircraft_name}_range_{timestamp()}.pdf"
+    save_path = os.path.join(save_dir, filename)
+    plt.savefig(save_path)
+    plt.close()
+    print(f"range plot saved as {os.path.abspath(save_path)}")
+
+def plot_endurance(altitudes, speeds, intersection_speeds, endurance , aircraft_name="aircraft", save_dir="Outputs"):
+    """
+    Save range vs speed for each altitude to a PDF file.
+    """
+    plt.figure(figsize=(8, 6))
+    for i, altitude in enumerate(altitudes):
+        max_speed = intersection_speeds[i]
+        mask = speeds[i, :] <= max_speed
+        speeds_kmh = speeds[i, mask] * 3.6
+        endurance_filtered = endurance[i, mask]
+        plt.plot(speeds_kmh, endurance_filtered, label=f"{int(altitude)} m")
+
+    plt.xlabel("Speed [km/h]")
+    plt.ylabel("Endurance [h]")
+    plt.title(f"Endurance vs Speed: {aircraft_name}")
+    plt.legend(title="Altitude")
+    plt.grid(True)
+    plt.ylim(bottom=0)
+    plt.tight_layout()
+
+    save_dir = ensure_output_dir(save_dir)
+    filename = f"{aircraft_name}_endurance_{timestamp()}.pdf"
+    save_path = os.path.join(save_dir, filename)
+    plt.savefig(save_path)
+    plt.close()
+    print(f"endurance plot saved as {os.path.abspath(save_path)}")
+

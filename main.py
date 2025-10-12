@@ -3,6 +3,8 @@ from flight_analysis import FlightPerformance
 from plot_flight_performance import plot_flight_envelope
 from plot_flight_performance import plot_climb_rate
 from plot_flight_performance import plot_turn_diagram
+from plot_flight_performance import plot_range
+from plot_flight_performance import plot_endurance
 import joke
 
 def print_parameters(adata):
@@ -79,6 +81,8 @@ def main():
                 plot_flight_envelope(altitudes, stall_speeds, intersections, ceiling, aircraft_name=adata.name)
                 plot_climb_rate(altitudes, fp.speeds, fp.w, aircraft_name=adata.name)
                 plot_turn_diagram(turn_data, aircraft_name=adata.name)
+                plot_range(altitudes, fp.speeds, intersections, fp.R, aircraft_name=adata.name)
+                plot_endurance(altitudes, fp.speeds, intersections, fp.E, aircraft_name=adata.name)
 
             else:
                 print("No data loaded. Please read the input file first.")

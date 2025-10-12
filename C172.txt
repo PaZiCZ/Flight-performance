@@ -10,8 +10,8 @@ AERO
 
 PROPULSION 
 Type 
-#engtype  proptype	pmax	etaprop	vnom
-1	1	120	0.85	235
+#engtype  proptype	pmax	etaprop	vnom    cep
+1	1	120	0.85	235 0.276
 
 MASS
 #mtow	mfuel
