@@ -4,6 +4,7 @@ from ISA import air_density
 from specifications import nv, nh, hmax, vmax
 from constants import g
 from power import power_available
+from power import calculate_propeller_efficiency
 
 class FlightPerformance:
     def __init__(self, adata):
@@ -19,9 +20,13 @@ class FlightPerformance:
         self.Pr = np.zeros((nh, nv))
         self.intersections = []
         self.w = np.zeros((nh, nv))
+        self.eta = np.zeros((nh, nv))
+        self.R = np.zeros((nh, nv))
+        self.E = np.zeros((nh, nv))
 
     def compute_performance(self, adata):
         ar = adata.bref ** 2 / adata.sref
+        cep = adata.cep / 1000 / 3600
 
         for i, altitude in enumerate(self.altitudes):
             vstall = np.sqrt(
@@ -32,6 +37,7 @@ class FlightPerformance:
 
         for i, altitude in enumerate(self.altitudes):
             rho = air_density(altitude)
+            coef_E = (rho * adata.sref / (2 * adata.mtow * g)) ** (1 / 2)
             for j, speed in enumerate(self.speeds[i, :]):
                 self.cL[i, j] = 2 * adata.mtow * g / (rho * adata.sref * speed ** 2)
                 self.cD[i, j] = adata.cd0 + self.cL[i,j] ** 2 / (np.pi * ar * adata.e)
@@ -40,6 +46,10 @@ class FlightPerformance:
                 self.Ta[i, j] = self.Pa[i, j] / speed
                 self.Pr[i, j] = self.D[i, j] * speed
                 self.w[i,j] = (self.Pa[i, j] - self.Pr[i, j]) / adata.mtow / g
+                self.eta[i,j] = calculate_propeller_efficiency(speed, adata.vnom, adata.etaprop)
+                self.R[i,j] = self.eta[i,j] / cep / g * self.cL[i, j] / self.cD[i, j] * np.log (adata.mtow / (adata.mtow - adata.mfuel)) / 1000
+                self.E[i, j] = self.eta[i, j] / cep / g * coef_E * self.cL[i, j] ** (3/2) / self.cD[i, j] * np.log(
+                    adata.mtow / (adata.mtow - adata.mfuel)) / 3600
 
     def find_intersections(self):
         nh, nv = self.speeds.shape
