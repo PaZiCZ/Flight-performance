@@ -25,6 +25,7 @@ class FlightPerformance:
         self.E = np.zeros((nh, nv))
 
     def compute_performance(self, adata):
+        # Level flight performance, power and thrust, range and endurance
         ar = adata.bref ** 2 / adata.sref
         cep = adata.cep / 1000 / 3600
 
@@ -52,6 +53,7 @@ class FlightPerformance:
                     adata.mtow / (adata.mtow - adata.mfuel)) / 3600
 
     def find_intersections(self):
+        # Power available and power required intersections at each altitude
         nh, nv = self.speeds.shape
         for i in range(nh):
             diff = self.Pa[i, :] - self.Pr[i, :]
